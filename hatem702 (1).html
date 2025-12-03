@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chef Hatem</title>
+
+    <style>
+        * {
+            box-sizing: border-box; 
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Tahoma', sans-serif;
+            color: #333;
+            line-height: 1.6;
+            background-color: #fcfcfc;
+        }
+
+
+        .login-page-styles {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f9f9f9;
+        }
+        
+        .login-container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        .submit-btn {
+            background-color: #e74c3c;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1.1em;
+            margin-top: 25px;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+        .submit-btn:hover {
+            background-color: #c0392b;
+        }
+        
+        .login-container input[type="text"], .login-container input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+
+
+        .main-header {
+            background-image: url('cam05_interactivelightmixcopy.jpg'); 
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+            text-shadow: 1px 1px 6px rgba(0,0,0,0.9);
+        }
+        .main-header h1 {
+            font-size: 3em;
+            margin-bottom: 5px;
+            color: #f1c40f;
+        }
+
+        #welcome-message {
+            background-color: #f1c40f;
+            color: #333;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+            display: none; 
+        }
+
+        #validation-warning {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+            display: none; 
+            border: 1px solid #f5c6cb;
+        }
+
+
+        .ordering-content {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+            display: grid;
+            grid-template-columns: 2fr 1.2fr;
+            gap: 30px;
+        }
+        
+        .reservation-form {
+            background-color: #ecf0f1;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            border-left: 5px solid #3498db;
+        }
+        .reservation-form input, .reservation-form select {
+            padding: 8px;
+            margin: 5px 0 10px;
+            width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            display: block;
+        }
+
+        .menu-section h2, .menu-section h3 {
+            border-bottom: 2px solid #e74c3c;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            color: #e74c3c;
+        }
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .menu-item-card {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+        }
+        .menu-item-card img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-right: 1px solid #eee;
+        }
+        .item-details {
+            padding: 10px;
+            flex-grow: 1;
+        }
+        .item-details h4 {
+            color: #333;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+        .item-details p {
+            font-size: 0.9em;
+            color: #777;
+            margin-bottom: 5px;
+        }
+        .item-details input[type="number"] {
+            width: 60px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        .heat-rating {
+            color: orange; 
+            font-size: 1.2em;
+            margin-left: 10px;
+        }
+
+        .order-summary-section {
+            background-color: #f7f7f7;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            position: sticky; 
+            top: 20px;
+            height: fit-content;
+        }
+        
+        .account-summary {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #3498db; 
+            background-color: #eaf6ff;
+            border-radius: 6px;
+        }
+        .account-summary h3 {
+            color: #3498db;
+            border-bottom: 1px solid #3498db;
+            padding-bottom: 5px;
+            margin-bottom: 10px;
+        }
+        
+        #final-cost {
+            color: #e74c3c;
+            font-size: 1.4em;
+        }
+        
+        .add-ons-group {
+            border: 1px solid #f1c40f;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 6px;
+            background-color: #fffaf0;
+        }
+        .add-ons-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: normal;
+        }
+
+        .main-footer {
+            text-align: center;
+            padding: 15px;
+            background-color: #34495e;
+            color: white;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+
+<body class="login-page-styles">
+
+    <div id="login-page">
+        <div class="login-container">
+            <h1>The Gourmet Bistro</h1>
+            <h2>Staff/Customer Login</h2>
+            <p style="margin-bottom: 20px;">Enter your name to start ordering.</p>
+
+            <form onsubmit="return handleLogin()">
+                <label for="username">Your Name:</label>
+                <input type="text" id="username" name="username" placeholder="Enter your full name" required>
+
+                <label for="password">Password (Optional):</label>
+                <input type="password" id="password" name="password" value="1234" disabled style="background-color: #eee;">
+
+                <button type="submit" class="submit-btn" style="background-color: #2ecc71;">Start Ordering</button>
+            </form>
+        </div>
+    </div>
+    
+    <div id="ordering-page" style="display: none;">
+        <header class="main-header">
+            <div id="welcome-message"></div>
+            <h1>The Gourmet Bistro</h1>
+            <p>Order Fresh, Delicious Food Now</p>
+        </header>
+
+        <main class="ordering-content">
+            
+            <div class="menu-section">
+                <h2>Table Reservation 📅</h2>
+                
+                <div id="validation-warning"></div> 
+
+                <div class="reservation-form">
+                    <h3>Book Your Table</h3>
+                    <label for="resDate">Reservation Date:</label>
+                    <input type="date" id="resDate" required>
+                    
+                    <label for="resTime">Time:</label>
+                    <input type="time" id="resTime" required>
+                    
+                    <label for="resGuests">Number of Guests:</label>
+                    <select id="resGuests">
+                        <option value="1">1 Person</option>
+                        <option value="2">2 Persons</option>
+                        <option value="4">4 Persons</option>
+                        <option value="6">6 Persons</option>
+                        <option value="8">8+ Persons</option>
+                    </select>
+                    <button type="button" onclick="reserveTable()" class="submit-btn" style="background-color: #3498db; margin-top: 5px;">Confirm Reservation</button>
+                </div>
+                
+                <h2>The Menu 🍔</h2>
+                
+                <form id="orderForm">
+                    <div class="menu-grid">
+                        
+                        <div class="menu-item-card">
+                            <img src="C:\Users\202310287\Desktop\12\image\coronavirus_slide_files\6989da2b-9029-4e0c-ba16-eac56158db9a.jpg" alt="Classic Burger">
+                            <div class="item-details">
+                                <h4>Classic Beef Burger <span class="heat-rating">🌶️</span></h4>
+                                <p>Grilled beef patty with our special sauce.</p>
+                                <p>Price: $15.00</p>
+                                <label for="qty1">Qty:</label>
+                                <input type="number" id="qty1" min="0" value="0" data-price="15.00" data-name="Classic Burger">
+                            </div>
+                        </div>
+
+                        <div class="menu-item-card">
+                            <img src="C:\Users\202310287\Desktop\12\image\coronavirus_slide_files\b407f9c7-2fac-43ce-ab62-68a44ac92550.jpg" alt="Pepperoni Pizza">
+                            <div class="item-details">
+                                <h4>Pepperoni Pizza <span class="heat-rating">🌶️🌶️</span></h4>
+                                <p>Authentic dough with spicy pepperoni slices.</p>
+                                <p>Price: $22.50</p>
+                                <label for="qty2">Qty:</label>
+                                <input type="number" id="qty2" min="0" value="0" data-price="22.50" data-name="Pepperoni Pizza">
+                            </div>
+                        </div>
+
+                        <div class="menu-item-card">
+                            <img src="C:\Users\202310287\Desktop\12\image\coronavirus_slide_files\6429f9d7-76db-4262-9b40-cf5e8d35a124.jpg" alt="Caesar Salad">
+                            <div class="item-details">
+                                <h4>Grilled Chicken Salad <span class="heat-rating"></span></h4>
+                                <p>Fresh greens, chicken breast, and creamy dressing.</p>
+                                <p>Price: $12.00</p>
+                                <label for="qty3">Qty:</label>
+                                <input type="number" id="qty3" min="0" value="0" data-price="12.00" data-name="Chicken Salad">
+                            </div>
+                        </div>
+                        
+                        <div class="menu-item-card">
+                            <img src="C:\Users\202310287\Desktop\12\image\coronavirus_slide_files\93b5a6ce-ac7d-4c0a-8d23-1989736b8ae7.jpg" alt="Iced Tea">
+                            <div class="item-details">
+                                <h4>Fresh Iced Tea <span class="heat-rating"></span></h4>
+                                <p>Large cup, available in Lemon or Peach.</p>
+                                <p>Price: $5.00</p>
+                                <label for="qty4">Qty:</label>
+                                <input type="number" id="qty4" min="0" value="0" data-price="5.00" data-name="Iced Tea">
+                            </div>
+                        </div>
+
+                    </div>
+                    
+                    <h3 style="margin-top: 30px; margin-bottom: 15px; color: #e74c3c;">Add-ons & Delivery</h3>
+
+                    <div class="add-ons-group">
+                        <label>
+                            <input type="checkbox" id="extra_cheese" data-price="3.00"> Extra Cheese (Fixed: $3.00)
+                        </label>
+                        <label>
+                            <input type="checkbox" id="special_sauce" data-price="2.00"> Signature Sauce (Fixed: $2.00)
+                        </label>
+                        <label>
+                            <input type="checkbox" id="delivery_fee" data-price="7.00"> Premium Delivery (Fixed: $7.00)
+                        </label>
+                    </div>
+
+                    <button type="button" onclick="processOrder()" class="submit-btn" style="background-color: #e74c3c; margin-top: 10px;">Calculate & Place Order</button>
+                </form>
+            </div>
+            
+            <div class="order-summary-section">
+                
+                <div class="account-summary">
+                    <h3>  (My Account)</h3>
+                    
+                    <div id="reservationDetails">
+                        <p style="color: #c0392b; font-weight: bold;">❌ No Table Reserved Yet.</p>
+                    </div>
+                    
+                    <hr style="margin: 15px 0;">
+
+                    <h3> (Order Summary)</h3>
+                    <div id="summaryDetails">No items selected.</div>
+
+                    <div id="finalCostDisplay" style="margin-top: 15px; border-top: 1px dashed #ccc; padding-top: 10px;">
+                        <p style="font-size: 1.1em; font-weight: bold;">Total Due: <span id="final-cost">$0.00</span></p>
+                    </div>
+                </div>
+
+                <button onclick="handleLogout()" class="submit-btn" style="background-color: #34495e; margin-top: 20px;">Exit/Logout</button>
+            </div>
+
+        </main>
+
+        <footer class="main-footer">
+            <p>&copy; 2025 The Gourmet Bistro. Freshness Guaranteed.</p>
+        </footer>
+    </div>
+
+    <script>
+        let currentUserName = ''; 
+        let tableReservation = null; 
+
+        function handleLogin() {
+            const usernameInput = document.getElementById('username').value;
+            if (usernameInput.trim() === "") {
+                alert("Please enter your name to proceed.");
+                return false;
+            }
+            
+            currentUserName = usernameInput;
+            document.getElementById('login-page').style.display = 'none';
+            document.getElementById('ordering-page').style.display = 'grid';
+            document.body.classList.remove('login-page-styles'); 
+
+            const welcomeMsg = document.getElementById('welcome-message');
+            welcomeMsg.textContent = `Welcome, ${currentUserName}! Enjoy your 15% First-Time Order Discount.`;
+            welcomeMsg.style.display = 'block';
+
+            updateFullAccountSummary(0, 0);
+
+            return false;
+        }
+
+        function handleLogout() {
+            document.getElementById('ordering-page').style.display = 'none';
+            document.getElementById('login-page').style.display = 'flex';
+            document.body.classList.add('login-page-styles');
+            document.getElementById('orderForm').reset();
+            document.getElementById('welcome-message').style.display = 'none';
+            document.getElementById('validation-warning').style.display = 'none'; 
+            document.getElementById('summaryDetails').innerHTML = 'No items selected.';
+            document.getElementById('reservationDetails').innerHTML = '<p style="color: #c0392b; font-weight: bold;">❌ No Table Reserved Yet.</p>';
+            document.getElementById('final-cost').textContent = '$0.00';
+            tableReservation = null; 
+        }
+        
+        function reserveTable() {
+            const dateInput = document.getElementById('resDate').value;
+            const timeInput = document.getElementById('resTime').value;
+            const guests = document.getElementById('resGuests').value;
+            const resDate = new Date(dateInput + ' ' + timeInput);
+            const today = new Date();
+            
+            const warningDiv = document.getElementById('validation-warning');
+            warningDiv.style.display = 'none';
+            
+            if (!dateInput || !timeInput) {
+                warningDiv.textContent = "Error: Please select both a Date and Time for the reservation.";
+                warningDiv.style.display = 'block';
+                return;
+            }
+
+            if (resDate < today) {
+                warningDiv.textContent = "Error: Reservation date/time cannot be in the past.";
+                warningDiv.style.display = 'block';
+                return;
+            }
+
+            tableReservation = {
+                date: resDate.toDateString(),
+                time: timeInput,
+                guests: guests
+            };
+            
+            updateFullAccountSummary();
+            
+            alert(`Reservation Confirmed for ${guests} guests on ${tableReservation.date} at ${tableReservation.time}!`);
+        }
+
+        function updateFullAccountSummary(total = 0, discount = 0, isOrderPlaced = false) {
+            
+            const reservationDiv = document.getElementById('reservationDetails');
+            
+            if (tableReservation) {
+                reservationDiv.innerHTML = `
+                    <p style="color: #2ecc71; font-weight: bold;">✅ Table Reserved!</p>
+                    <p><strong>Date:</strong> ${tableReservation.date}</p>
+                    <p><strong>Time:</strong> ${tableReservation.time}</p>
+                    <p><strong>Guests:</strong> ${tableReservation.guests}</p>
+                `;
+            } 
+            
+            document.getElementById('final-cost').textContent = `$${total.toFixed(2)}`;
+            
+            if (isOrderPlaced) {
+            }
+        }
+
+        function processOrder() {
+            let subtotal = 0;
+            let itemsHTML = '';
+            let totalQuantity = 0;
+            const itemInputs = document.querySelectorAll('#orderForm input[type="number"]');
+            const warningDiv = document.getElementById('validation-warning');
+            warningDiv.style.display = 'none';
+
+            itemInputs.forEach(input => {
+                const qty = parseInt(input.value) || 0;
+                const price = parseFloat(input.getAttribute('data-price'));
+                const name = input.getAttribute('data-name');
+                
+                if (qty < 0) {
+                    warningDiv.textContent = `Error: Quantity for ${name} cannot be negative.`;
+                    warningDiv.style.display = 'block';
+                    return; 
+                }
+                
+                if (qty > 0) {
+                    const itemTotal = qty * price;
+                    subtotal += itemTotal;
+                    totalQuantity += qty;
+                    itemsHTML += `<p>${qty}x ${name} (@$${price.toFixed(2)}) - $${itemTotal.toFixed(2)}</p>`;
+                }
+            });
+
+            if (warningDiv.style.display === 'block') {
+                return false;
+            }
+
+            if (totalQuantity === 0) {
+                warningDiv.textContent = "Error: Please select at least one item to place an order.";
+                warningDiv.style.display = 'block';
+                return false;
+            }
+
+            let addOnsCost = 0;
+            let addOnsSummary = '';
+
+            const extraCheese = document.getElementById('extra_cheese');
+            if (extraCheese.checked) {
+                const cost = parseFloat(extraCheese.getAttribute('data-price'));
+                addOnsCost += cost;
+                addOnsSummary += `<p>+ Extra Cheese: $${cost.toFixed(2)}</p>`;
+            }
+
+            const specialSauce = document.getElementById('special_sauce');
+            if (specialSauce.checked) {
+                const cost = parseFloat(specialSauce.getAttribute('data-price'));
+                addOnsCost += cost;
+                addOnsSummary += `<p>+ Signature Sauce: $${cost.toFixed(2)}</p>`;
+            }
+
+            const deliveryFee = document.getElementById('delivery_fee');
+            if (deliveryFee.checked) {
+                const cost = parseFloat(deliveryFee.getAttribute('data-price'));
+                addOnsCost += cost;
+                addOnsSummary += `<p>+ Premium Delivery: $${cost.toFixed(2)}</p>`;
+            }
+            
+            const preDiscountTotal = subtotal + addOnsCost;
+            const discountRate = 0.15; 
+            const discountAmount = preDiscountTotal * discountRate;
+            
+            const finalTotalCost = preDiscountTotal - discountAmount;
+            
+            let summaryHTML = `
+                <p><strong>Order placed by:</strong> ${currentUserName}</p>
+                <hr style="margin: 10px 0;">
+                <p style="font-weight: bold; color: #e74c3c;">--- Your Items ---</p>
+                ${itemsHTML}
+            `;
+
+            if (addOnsSummary) {
+                summaryHTML += '<hr style="margin: 10px 0;"><p style="font-weight: bold;">--- Add-ons ---</p>' + addOnsSummary;
+            }
+
+            summaryHTML += `
+                <hr style="margin: 10px 0;">
+                <p>Subtotal (Food + Addons): <strong>$${preDiscountTotal.toFixed(2)}</strong></p>
+                <p style="color: #2ecc71; font-weight: bold;">⭐ First-Order Discount (15%): -$${discountAmount.toFixed(2)}</p>
+            `;
+
+            document.getElementById('summaryDetails').innerHTML = summaryHTML;
+            document.getElementById('orderForm').reset(); 
+            
+            updateFullAccountSummary(finalTotalCost, discountAmount, true);
+
+            alert(`Order placed successfully! Final Total: $${finalTotalCost.toFixed(2)}`);
+
+            return false;
+        }
+    </script>
+
+</body>
+</html>
